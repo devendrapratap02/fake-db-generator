@@ -1,4 +1,4 @@
-from schema import DbColumn
+from .schema import DbColumn
 from sqlalchemy import (
     Date,
     ForeignKey,
