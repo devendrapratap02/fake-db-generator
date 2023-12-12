@@ -1,5 +1,8 @@
+import os
+import sys
+
 from models.fake import faker
-from models.schema import sc
+from models.schema import load_schema
 from sqlalchemy import (
     Column,
     MetaData,
@@ -8,6 +11,10 @@ from sqlalchemy import (
 )
 from sqlalchemy.engine import URL
 
+# load schema json 
+path = sys.argv[1]
+filename = path if os.path.isabs(path) else os.path.join(os.path.dirname(__file__), path)
+sc = load_schema(filename)
 
 # Set up connections between sqlalchemy and postgres db-api
 engine = create_engine(URL.create(**sc.database.model_dump()))

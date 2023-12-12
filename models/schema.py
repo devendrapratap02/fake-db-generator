@@ -1,8 +1,7 @@
 import json
 import os
-import sys
-from typing import Any, Optional
 from enum import Enum
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 from sqlalchemy import (
@@ -12,6 +11,7 @@ from sqlalchemy import (
     Numeric,
     String,
 )
+
 
 class DbType(Enum):
     MySql = "mysql"
@@ -67,23 +67,12 @@ class DbSchema(BaseModel):
     tables: Optional[list[DbTable]]
     populate: list[DbPopulate]
 
-sc: DbSchema
 def load_schema(filename):
-    global sc
-    filename = os.path.dirname(__file__) + "/../data/" + "schema.json"
     with open(filename) as file:
         db = json.load(file)
-    sc = DbSchema(**db)
+    
+    return DbSchema(**db)
 
 if __name__ == "__main__":
     filename = os.path.join(os.path.dirname(__file__), "..", "data", "schema.json")
-    load_schema(filename)
-else:
-    path = sys.argv[1]
-    
-    if os.path.isabs(path):
-        filename = path
-    else:
-        filename = os.path.join(os.path.dirname(__file__), path)
-
-    load_schema(filename)
+    sc = load_schema(filename)
