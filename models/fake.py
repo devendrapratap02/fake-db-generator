@@ -16,12 +16,12 @@ class User(Person):
 
 class PersonProvider(BaseProvider):
     __provider__ = "person"
-
+    
     def person(self):
         gender = self.random_element(["F", "M"])
         first_name = self.generator.first_name_male() if gender == "M" else self.generator.first_name_female()
         last_name = self.generator.last_name()
-        email_address = f"{first_name.lower()}.{last_name.lower()}@{self.generator.domain_name()}"
+        email_address = f"{first_name}.{last_name}@{self.generator.domain_name()}".lower()
         
         return Person(
             first_name=first_name,
@@ -38,10 +38,10 @@ class UserProvider(PersonProvider):
     def user(self):
         person = self.person()
         return User(
-            username=f"{person.first_name.lower()}_{person.last_name.lower()}",
-            password=self.generator.password(), **person.dict()
+            username=f"{person.first_name}_{person.last_name}".lower(),
+            password=self.generator.password(), **person.model_dump()
         )
-        
+
 class RandomProvider(BaseProvider):
     __provider__ = "random_from"
     

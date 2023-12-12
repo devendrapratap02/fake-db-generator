@@ -1,9 +1,10 @@
 import json
 import os
+import sys
 from typing import Any, Optional
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import (
     Date,
     ForeignKey,
@@ -18,7 +19,7 @@ class DbType(Enum):
     SqLite = "sqlite"
 
 class DbOptions(BaseModel):
-    dbtype: DbType
+    dbtype: DbType = Field(exclude=True)
     drivername: str
     username: str
     password: str
@@ -74,4 +75,15 @@ def load_schema(filename):
         db = json.load(file)
     sc = DbSchema(**db)
 
-load_schema("")
+if __name__ == "__main__":
+    filename = os.path.join(os.path.dirname(__file__), "..", "data", "schema.json")
+    load_schema(filename)
+else:
+    path = sys.argv[1]
+    
+    if os.path.isabs(path):
+        filename = path
+    else:
+        filename = os.path.join(os.path.dirname(__file__), path)
+
+    load_schema(filename)
