@@ -1,0 +1,264 @@
+{
+    "database": {
+        "dbtype": "psql",
+        "drivername": "postgresql",
+        "username": "postgres",
+        "password": "psql",
+        "host": "localhost",
+        "database": "ecommerce"
+    },
+    "tables": [
+        {
+            "name": "customers",
+            "columns": [
+                {
+                    "name": "customer_id",
+                    "type": {
+                        "name": "integer"
+                    },
+                    "options": {
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "first_name",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 35
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "last_name",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 35
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "gender",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 2
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "email",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 50
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "address",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 150
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "dob",
+                    "type": {
+                        "name": "date", "args": {}
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "products", 
+            "columns": [
+                {
+                    "name": "product_id",
+                    "type": {
+                        "name": "integer"
+                    },
+                    "options": {
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "name": "string",  "args": {
+                            "length": 35
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "price",
+                    "type": {
+                        "name": "number",  "args": {
+                            "precision": 10, "scale": 2
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "stores", 
+            "columns": [
+                {
+                    "name": "store_id",
+                    "type": {
+                        "name": "integer"
+                    },
+                    "options": {
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "address",
+                    "type": {
+                        "name": "string",  "args": {
+                            "length": 150
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "transactions", 
+            "columns": [
+                {
+                    "name": "transaction_id",
+                    "type": {
+                        "name": "integer"
+                    },
+                    "options": {
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "transaction_date",
+                    "type": {
+                        "name": "date",  "args": {}
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "customer_id",
+                    "type": {
+                        "name": "foreign",  "args": "customers.customer_id"
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "product_id",
+                    "type": {
+                        "name": "foreign",  "args": "products.product_id"
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "store_id",
+                    "type": {
+                        "name": "foreign",  "args": "stores.store_id"
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "populate": [
+        {
+            "name": "customers",
+            "count": 999,
+            "fields": [
+                {
+                    "name": "first_name",
+                    "generator": "person.first_name"
+                }, 
+                {
+                    "name": "last_name",
+                    "generator": "person.last_name"
+                }, 
+                {
+                    "name": "gender",
+                    "generator": "person.gender"
+                }, 
+                {
+                    "name": "email",
+                    "generator": "person.email"
+                },
+                {
+                    "name": "address",
+                    "generator": "address"
+                },
+                {
+                    "name": "dob",
+                    "generator": "date_of_birth",
+                    "args": {
+                        "minimum_age": 16, "maximum_age": 60
+                    }
+                }
+            ]
+        },
+        {
+            "name": "products",
+            "count": 9999,
+            "fields": [
+                {
+                    "name": "name",
+                    "generator": "random_from", 
+                    "args": ["hat", "cap", "shirt", "sweater", "sweatshirt", "shorts", "jeans", "sneakers", "boots", "coat", "accessories"]
+                },
+                {
+                    "name": "price",
+                    "generator": "random_int",
+                    "args": {
+                        "min": 499, "max": 99999, "step": 500
+                    }
+                }
+            ]
+        }, 
+        {
+            "name": "stores",
+            "count": 20,
+            "fields": [
+                {
+                    "name": "address",
+                    "generator": "address"
+                }
+            ]
+        }
+    ]
+}
