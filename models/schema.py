@@ -4,14 +4,6 @@ from enum import Enum
 from typing import Any, Optional
 
 from pydantic import BaseModel, Field
-from sqlalchemy import (
-    Date,
-    ForeignKey,
-    Integer,
-    Numeric,
-    String,
-)
-
 
 class DbType(Enum):
     MySql = "mysql"
@@ -30,23 +22,6 @@ class DbColumn(BaseModel):
     name: str
     type: dict
     options: dict
-    
-    def get_type(self):
-        type_name = self.type.get("name")
-        type_args = self.type.get("args")
-        match type_name:
-            case "integer": 
-                return Integer
-            case "number": 
-                return Numeric(**type_args)
-            case "string": 
-                return String(**type_args)
-            case "date": 
-                return Date
-            case "foreign": 
-                return ForeignKey(type_args)
-            case _: 
-                raise Exception(f"No matched column type found {type_name}")
 
 class DbTable(BaseModel):
     name: str

@@ -3,6 +3,7 @@ import sys
 
 from models.fake import faker
 from models.schema import load_schema
+from models.utils import get_column_type
 from sqlalchemy import (
     Column,
     MetaData,
@@ -27,7 +28,7 @@ if sc.tables:
         tt = Table(table_data.name, metadata, *[
                 Column(
                     column_data.name,
-                    column_data.get_type(),
+                    get_column_type(column_data),
                     **column_data.options,
                 ) 
                 for column_data in table_data.columns
