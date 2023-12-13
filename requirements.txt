@@ -1,5 +1,5 @@
-faker
-psycopg2-binary
-SQLAlchemy
-pydantic
-mysql-connector-python
+faker==20.1.0
+psycopg2-binary==2.9.9
+SQLAlchemy==2.0.23
+pydantic==2.5.2
+mysql-connector-python==8.2.0
