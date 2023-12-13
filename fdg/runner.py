@@ -1,8 +1,8 @@
 import os
 import pathlib
+import shutil
 from argparse import ArgumentParser
 
-from .models import DbSchema, faker, get_column_type, load_schema
 from sqlalchemy import (
     Column,
     MetaData,
@@ -10,6 +10,8 @@ from sqlalchemy import (
     create_engine,
 )
 from sqlalchemy.engine import URL, Engine
+
+from .models import DbSchema, faker, get_column_type, load_schema
 
 sc:DbSchema
 engine:Engine
@@ -89,7 +91,9 @@ def main():
         parser.error("the following arguments are required: -f/--file : file path of schema")
 
     if args.download_schema is not None:
-        print("download")
+        src_path = os.path.join(os.path.dirname(__file__), "data", "schema.json")
+        dest_path = os.path.join(os.getcwd(), "schema.json")
+        shutil.copyfile(src_path, dest_path)
     else:
         base_setup(args.file)
         

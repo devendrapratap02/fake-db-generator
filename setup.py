@@ -26,6 +26,10 @@ setup(
 		"License :: OSI Approved :: MIT License", 
 		"Operating System :: OS Independent", 
 	], 
+	data_files = [
+		"fdg/data/schema.json"
+	],
+	include_package_data = True,
 	keywords ="faker dummy db database generate generator dps", 
 	install_requires = requirements, 
 	zip_safe = False
