@@ -50,7 +50,7 @@ def populate_data():
         for table in sc.populate:
             tt = metadata.tables.get(table.name)
             with engine.begin() as conn:
-                for _ in range(table.count):
+                for index in range(1, table.count+1):
                     commons = {}
                     results = {}
                     for field in table.fields:
@@ -61,6 +61,9 @@ def populate_data():
                         )
                         
                     conn.execute(tt.insert().values(**results))
+
+                    print(f"\r{table.name: <15}| {index: <4} entries | {index*100//table.count}%", end="\r")
+            print()
 
 if __name__ == "__main__":
     generate_tables()
