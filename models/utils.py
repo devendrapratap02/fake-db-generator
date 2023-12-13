@@ -1,11 +1,8 @@
+from sqlalchemy import Date, ForeignKey, Integer, MetaData, Numeric, String, select
+from sqlalchemy.engine import Engine
+
+from .fake import BaseProvider, faker
 from .schema import DbColumn
-from sqlalchemy import (
-    Date,
-    ForeignKey,
-    Integer,
-    Numeric,
-    String,
-)
 
 
 def get_column_type(column:DbColumn):
@@ -24,3 +21,21 @@ def get_column_type(column:DbColumn):
             return ForeignKey(type_args)
         case _: 
             raise Exception(f"No matched column type found {type_name}")
+
+class DbRandomItem(BaseProvider):
+    __provider__ = "db_random_item"
+    
+    def db_random_item(self, attribute:str, **kwargs):
+        table_name, column_name = attribute.split(".")
+        
+        engine:Engine = kwargs.get("engine")
+        metadata: MetaData = kwargs.get("metadata")
+        table = metadata.tables.get(table_name)
+        
+        with engine.begin() as conn:
+            st = conn.execute(select(table.c[column_name])).fetchall()
+            out = self.generator.random.choice(st)[0]
+        
+        return out
+
+faker.add_provider(DbRandomItem)

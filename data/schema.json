@@ -234,7 +234,7 @@
         },
         {
             "name": "products",
-            "count": 9999,
+            "count": 99,
             "fields": [
                 {
                     "name": "name",
@@ -249,7 +249,7 @@
                     }
                 }
             ]
-        }, 
+        },
         {
             "name": "stores",
             "count": 20,
@@ -257,6 +257,35 @@
                 {
                     "name": "address",
                     "generator": "address"
+                }
+            ]
+        },
+        {
+            "name": "transactions",
+            "count": 4999,
+            "fields": [
+                {
+                    "name": "transaction_date",
+                    "generator": "random_date",
+                    "args": {
+                        "duration": -30
+                    }
+                },
+                {
+                    "name": "customer_id",
+                    "generator": "db_random_item", 
+                    "args": "customers.customer_id"
+                },
+                {
+                    "name": "store_id",
+                    "generator": "db_random_item", 
+                    "args": "stores.store_id"
+                },
+                
+                {
+                    "name": "product_id",
+                    "generator": "db_random_item", 
+                    "args": "products.product_id"
                 }
             ]
         }

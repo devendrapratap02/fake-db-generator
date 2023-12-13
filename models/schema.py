@@ -31,6 +31,10 @@ class PopulateField(BaseModel):
     name: str
     generator: str
     args: Optional[Any] = None
+    
+    @property
+    def db_access(self) -> bool:
+        return self.generator in ["db_random_item"]
 
 class DbPopulate(BaseModel):
     name: str

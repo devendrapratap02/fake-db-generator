@@ -1,9 +1,6 @@
 import os
 import sys
 
-from models.fake import faker
-from models.schema import load_schema
-from models.utils import get_column_type
 from sqlalchemy import (
     Column,
     MetaData,
@@ -11,6 +8,8 @@ from sqlalchemy import (
     create_engine,
 )
 from sqlalchemy.engine import URL
+
+from models import faker, get_column_type, load_schema
 
 # load schema json 
 path = sys.argv[1]
@@ -23,35 +22,46 @@ engine = create_engine(URL.create(**sc.database.model_dump()))
 # Instantiate metadata class
 metadata = MetaData()
 
-if sc.tables:
-    for table_data in sc.tables:
-        tt = Table(table_data.name, metadata, *[
-                Column(
-                    column_data.name,
-                    get_column_type(column_data),
-                    **column_data.options,
-                ) 
-                for column_data in table_data.columns
-            ])
+def generate_tables():
+    if sc.tables:
+        for table_data in sc.tables:
+            tt = Table(table_data.name, metadata, *[
+                    Column(
+                        column_data.name,
+                        get_column_type(column_data),
+                        **column_data.options,
+                    ) 
+                    for column_data in table_data.columns
+                ])
 
-        tt.create(engine)
-        print(f"table {tt.name} successfully created")
+            tt.create(engine)
+            print(f"table {tt.name} successfully created")
 
-if sc.populate:
-    with engine.connect() as conn:
-        metadata.reflect(conn)
 
-    for table in sc.populate:
-        tt = metadata.tables.get(table.name)
-        with engine.begin() as conn:
-            for _ in range(table.count):
-                commons = {}
-                results = {}
-                for field in table.fields:
-                    results[field.name], commons = faker.get(
-                        field.generator, 
-                        field.args, 
-                        commons
-                    )
-                    
-                conn.execute(tt.insert().values(**results))
+def populate_data():
+    if sc.populate:
+        extras = {
+            "engine": engine,
+            "metadata": metadata,
+        }
+        with engine.connect() as conn:
+            metadata.reflect(conn)
+
+        for table in sc.populate:
+            tt = metadata.tables.get(table.name)
+            with engine.begin() as conn:
+                for _ in range(table.count):
+                    commons = {}
+                    results = {}
+                    for field in table.fields:
+                        results[field.name], commons = faker.get(
+                            field.generator, 
+                            field.args, 
+                            commons, **extras if field.db_access else {}
+                        )
+                        
+                    conn.execute(tt.insert().values(**results))
+
+if __name__ == "__main__":
+    generate_tables()
+    populate_data()
