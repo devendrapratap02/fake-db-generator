@@ -1,4 +1,7 @@
 {
+    "$meta": {
+        "description": "database schema for customers, products and their orders ie transactions"
+    },
     "database": {
         "dbtype": "psql",
         "drivername": "postgresql",
@@ -281,7 +284,6 @@
                     "generator": "db_random_item", 
                     "args": "stores.store_id"
                 },
-                
                 {
                     "name": "product_id",
                     "generator": "db_random_item", 
