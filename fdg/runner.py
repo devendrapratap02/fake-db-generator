@@ -60,6 +60,7 @@ def populate_data():
         entry_length = max([len(str(t.count)) for t in sc.populate])
         
         for table in sc.populate:
+            faker.unique.clear()
             tt = metadata.tables.get(table.name)
             with engine.begin() as conn:
                 for index in range(1, table.count+1):
