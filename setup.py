@@ -12,7 +12,7 @@ long_description = "Small python utility to generate dummy data in database tabl
 
 setup( 
 	name ="fake-db-generator", 
-	version ="1.0.0", 
+	version ="1.1.0", 
 	author ="Devendra Pratap", 
 	author_email ="dps.manit@gmail.com", 
 	url ="https://github.com/devendrapratap02/fake-db-generator", 
