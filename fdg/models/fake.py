@@ -1,7 +1,6 @@
 from faker import Faker
 from faker.providers import BaseProvider
 from pydantic import BaseModel
-import datetime
 
 class Person(BaseModel):
     first_name: str
@@ -51,13 +50,6 @@ class RandomProvider(BaseProvider):
     def random_from(self, *args):
         return self.random_element(args)
 
-class DateProvider(BaseProvider):
-    __provider__ = "random_date"
-    
-    def random_date(self, duration:int):
-        date_obj = datetime.datetime.now() + (duration/abs(duration)) * datetime.timedelta(days=self.generator.random.randint(1, abs(duration)))
-        return date_obj.date()
-
 class CustomProvider(BaseProvider):
     __provider__ = "get"
     
@@ -100,5 +92,4 @@ faker = Faker()
 faker.add_provider(PersonProvider)
 faker.add_provider(UserProvider)
 faker.add_provider(RandomProvider)
-faker.add_provider(DateProvider)
 faker.add_provider(CustomProvider)

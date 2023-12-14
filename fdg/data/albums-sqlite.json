@@ -177,9 +177,9 @@
                 },
                 {
                     "name": "release_date",
-                    "generator": "random_date",
+                    "generator": "date_between",
                     "args": {
-                        "duration": -3000
+                        "start_date": "-10y", "end_date": "today"
                     }
                 },
                 {

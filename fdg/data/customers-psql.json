@@ -15,7 +15,7 @@
             "name": "customers",
             "columns": [
                 {
-                    "name": "customer_id",
+                    "name": "id",
                     "type": {
                         "name": "integer"
                     },
@@ -93,7 +93,7 @@
             "name": "products", 
             "columns": [
                 {
-                    "name": "product_id",
+                    "name": "id",
                     "type": {
                         "name": "integer"
                     },
@@ -129,7 +129,7 @@
             "name": "stores", 
             "columns": [
                 {
-                    "name": "store_id",
+                    "name": "id",
                     "type": {
                         "name": "integer"
                     },
@@ -154,7 +154,7 @@
             "name": "transactions", 
             "columns": [
                 {
-                    "name": "transaction_id",
+                    "name": "id",
                     "type": {
                         "name": "integer"
                     },
@@ -172,27 +172,27 @@
                     }
                 },
                 {
-                    "name": "customer_id",
+                    "name": "id",
                     "type": {
-                        "name": "foreign",  "args": "customers.customer_id"
+                        "name": "foreign",  "args": "customers.id"
                     },
                     "options": {
                         "nullable": false
                     }
                 },
                 {
-                    "name": "product_id",
+                    "name": "id",
                     "type": {
-                        "name": "foreign",  "args": "products.product_id"
+                        "name": "foreign",  "args": "products.id"
                     },
                     "options": {
                         "nullable": false
                     }
                 },
                 {
-                    "name": "store_id",
+                    "name": "id",
                     "type": {
-                        "name": "foreign",  "args": "stores.store_id"
+                        "name": "foreign",  "args": "stores.id"
                     },
                     "options": {
                         "nullable": false
@@ -288,25 +288,25 @@
             "fields": [
                 {
                     "name": "transaction_date",
-                    "generator": "random_date",
+                    "generator": "date_between",
                     "args": {
-                        "duration": -30
+                        "start_date": "-60d", "end_date": "today"
                     }
                 },
                 {
-                    "name": "customer_id",
+                    "name": "id",
                     "generator": "db_random_item", 
-                    "args": "customers.customer_id"
+                    "args": "customers.id"
                 },
                 {
-                    "name": "store_id",
+                    "name": "id",
                     "generator": "db_random_item", 
-                    "args": "stores.store_id"
+                    "args": "stores.id"
                 },
                 {
-                    "name": "product_id",
+                    "name": "id",
                     "generator": "db_random_item", 
-                    "args": "products.product_id"
+                    "args": "products.id"
                 }
             ]
         }
