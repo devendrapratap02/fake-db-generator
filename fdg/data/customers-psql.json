@@ -172,7 +172,7 @@
                     }
                 },
                 {
-                    "name": "id",
+                    "name": "customer_id",
                     "type": {
                         "name": "foreign",  "args": "customers.id"
                     },
@@ -181,7 +181,7 @@
                     }
                 },
                 {
-                    "name": "id",
+                    "name": "product_id",
                     "type": {
                         "name": "foreign",  "args": "products.id"
                     },
@@ -190,7 +190,7 @@
                     }
                 },
                 {
-                    "name": "id",
+                    "name": "store_id",
                     "type": {
                         "name": "foreign",  "args": "stores.id"
                     },
@@ -294,17 +294,17 @@
                     }
                 },
                 {
-                    "name": "id",
+                    "name": "customer_id",
                     "generator": "db_random_item", 
                     "args": "customers.id"
                 },
                 {
-                    "name": "id",
+                    "name": "store_id",
                     "generator": "db_random_item", 
                     "args": "stores.id"
                 },
                 {
-                    "name": "id",
+                    "name": "product_id",
                     "generator": "db_random_item", 
                     "args": "products.id"
                 }
