@@ -53,6 +53,9 @@ def populate_data():
         }
         with engine.connect() as conn:
             metadata.reflect(conn)
+            
+        table_length = max([len(t.name) for t in sc.populate])
+        entry_length = max([len(str(t.count)) for t in sc.populate])
 
         for table in sc.populate:
             tt = metadata.tables.get(table.name)
@@ -69,7 +72,7 @@ def populate_data():
                         
                     conn.execute(tt.insert().values(**results))
 
-                    print(f"\r{table.name: <15}| {index: <4} entries | {index*100//table.count}%", end="\r")
+                    print(f"\r{table.name: <{table_length}} | {index: >0{entry_length}} entries | {index*100//table.count}%", end="\r")
             print()
 
 def main():
