@@ -1,7 +1,12 @@
-from setuptools import setup, find_packages 
+import os
+
+from setuptools import find_packages, setup
 
 with open("requirements.txt") as f: 
 	requirements = f.readlines() 
+
+data_path = "fdg/data/"
+data_files = [os.path.join(data_path, file) for file in os.listdir(data_path) if os.path.isfile(os.path.join(data_path, file))]
 
 long_description = "Small python utility to generate dummy data in database tables" 
 
@@ -26,9 +31,7 @@ setup(
 		"License :: OSI Approved :: MIT License", 
 		"Operating System :: OS Independent", 
 	], 
-	data_files = [
-		"fdg/data/schema.json"
-	],
+	data_files = data_files,
 	include_package_data = True,
 	keywords ="faker dummy db database generate generator dps", 
 	install_requires = requirements, 
