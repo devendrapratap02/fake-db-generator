@@ -17,6 +17,7 @@ sc:DbSchema
 engine:Engine
 metadata:MetaData
 
+
 def base_setup(filepath):
     global engine
     global metadata
@@ -29,6 +30,7 @@ def base_setup(filepath):
     
     metadata = MetaData()
 
+
 def generate_tables():
     if sc.tables:
         for table_data in sc.tables:
@@ -40,7 +42,7 @@ def generate_tables():
                     ) 
                     for column_data in table_data.columns
                 ])
-
+            
             tt.create(engine)
             print(f"table {tt.name} successfully created")
 
@@ -56,7 +58,7 @@ def populate_data():
             
         table_length = max([len(t.name) for t in sc.populate])
         entry_length = max([len(str(t.count)) for t in sc.populate])
-
+        
         for table in sc.populate:
             tt = metadata.tables.get(table.name)
             with engine.begin() as conn:
@@ -69,30 +71,30 @@ def populate_data():
                             field.args, 
                             commons, **extras if field.db_access else {}
                         )
-                        
+                    
                     conn.execute(tt.insert().values(**results))
-
                     print(f"\r{table.name: <{table_length}} | {index: >0{entry_length}} entries | {index*100//table.count}%", end="\r")
             print()
 
+
 def main():
     parser = ArgumentParser(prog="fdg", description="Fake Database Generator!!!")
-
+    
     parser.add_argument("-c", "--create-table", action="store_true", dest="create", help="creates the database tables")
     parser.add_argument("-p", "--populate-data", action="store_true", dest="populate", help="start populating data in tables")
-
+    
     parser.add_argument("-f", "--file", type=pathlib.Path, help="file path of schema")
-
+    
     parser.add_argument("-d", "--download-schema", type=pathlib.Path, help="creates the example schema in the provided path")
-
+    
     args = parser.parse_args()
-
+    
     if not args.create and not args.populate and args.download_schema is None:
         parser.error("no arguments provided!!!")
-
+    
     if (args.create or args.populate) and args.file is None:
         parser.error("the following arguments are required: -f/--file : file path of schema")
-
+    
     if args.download_schema is not None:
         src_path = os.path.join(os.path.dirname(__file__), "data", "schema.json")
         dest_path = os.path.join(os.getcwd(), "schema.json")
