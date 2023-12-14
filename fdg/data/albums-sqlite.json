@@ -1,0 +1,198 @@
+{
+    "$meta": {
+        "description": "database schema for album, artists, and genre"
+    },
+    "database": {
+        "dbtype": "sqlite",
+        "drivername": "sqlite",
+        "username": "",
+        "password": "",
+        "host": "",
+        "database": "albums.db"
+    },
+    "tables": [
+        {
+            "name": "artists",
+            "columns": [
+                {
+                    "name": "artist_id",
+                    "type": {
+                        "name": "integer"
+                    },
+                    "options": {
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 35
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "gender",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 2
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "dob",
+                    "type": {
+                        "name": "date", "args": {}
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "genres", 
+            "columns": [
+                {
+                    "name": "genre_id",
+                    "type": {
+                        "name": "integer"
+                    },
+                    "options": {
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "name": "string",  "args": {
+                            "length": 35
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "albums", 
+            "columns": [
+                {
+                    "name": "album_id",
+                    "type": {
+                        "name": "integer"
+                    },
+                    "options": {
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "name",
+                    "type": {
+                        "name": "string",  "args": {
+                            "length": 35
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "release_date",
+                    "type": {
+                        "name": "date",  "args": {}
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "artist_id",
+                    "type": {
+                        "name": "foreign",  "args": "artists.artist_id"
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "genre_id",
+                    "type": {
+                        "name": "foreign",  "args": "genres.genre_id"
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "populate": [
+        {
+            "name": "artists",
+            "count": 100,
+            "fields": [
+                {
+                    "name": "name",
+                    "generator": "person.full_name"
+                },
+                {
+                    "name": "gender",
+                    "generator": "person.gender"
+                },
+                {
+                    "name": "dob",
+                    "generator": "date_of_birth",
+                    "args": {
+                        "minimum_age": 16, "maximum_age": 60
+                    }
+                }
+            ]
+        },
+        {
+            "name": "genres",
+            "count": 50,
+            "fields": [
+                {
+                    "name": "name",
+                    "generator": "unique_item",
+                    "args": ["Pop","Rock","Hip Hop","R&B (Rhythm and Blues)","Jazz","Country","Electronic Dance Music (EDM)","Classical","Reggae","Blues","Metal","Folk","Soul","Funk","Punk","Indie Rock","Alternative","Gospel","Electronic","Dancehall","Techno","House","Ambient","Dubstep","Trap","Salsa","Merengue","Cumbia","Flamenco","Ska","Tejano","J-Pop (Japanese Pop)","K-Pop (Korean Pop)","Brazilian Samba","Afrobeat","Bollywood","Tango","Bluegrass","Disco","Hardcore","Grime","Psychedelic","Chillhop","Acid Jazz","Trance","Soca","Mambo","Garage Rock","World Music","Fusion"]
+                }
+            ]
+        },
+        {
+            "name": "albums",
+            "count": 5000,
+            "fields": [
+                {
+                    "name": "name",
+                    "generator": "name"
+                },
+                {
+                    "name": "release_date",
+                    "generator": "random_date",
+                    "args": {
+                        "duration": -3000
+                    }
+                },
+                {
+                    "name": "artist_id",
+                    "generator": "db_random_item", 
+                    "args": "artists.artist_id"
+                },
+                {
+                    "name": "genre_id",
+                    "generator": "db_random_item", 
+                    "args": "genres.genre_id"
+                }
+            ]
+        }
+    ]
+}

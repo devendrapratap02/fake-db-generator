@@ -1,14 +1,14 @@
 {
     "$meta": {
-        "description": "database schema for customers, products and their orders ie transactions"
+        "description": "database schema for employees, departments, titles and their salaries"
     },
     "database": {
-        "dbtype": "psql",
-        "drivername": "postgresql+psycopg2",
-        "username": "postgres",
-        "password": "psql",
+        "dbtype": "mysql",
+        "drivername": "postgresql",
+        "username": "root",
+        "password": "",
         "host": "localhost",
-        "database": "ecommerce"
+        "database": "employees"
     },
     "tables": [
         {
@@ -237,31 +237,12 @@
         },
         {
             "name": "products",
-            "count": 100,
+            "count": 99,
             "fields": [
                 {
                     "name": "name",
                     "generator": "random_from", 
-                    "args": ["Classic Denim Jeans", "Cotton Casual Shirt", "Leather Biker Jacket", "Knit Sweater Dress", "Tailored Wool Blazer",
-                    "Canvas Sneakers", "Athletic Running Shorts", "Formal Silk Tie", "Crisp White Button-Up Shirt", "Floral Sundress",
-                    "Cargo Pants", "Vintage Graphic T-Shirt", "Cashmere Pullover Sweater", "Quilted Puffer Jacket", "Ankle Boots",
-                    "Distressed Skinny Jeans", "Linen Summer Blouse", "Trench Coat", "Retro High-Waisted Bikini", "Wool Fedora Hat",
-                    "Tartan Plaid Skirt", "Hooded Sweatshirt", "Leopard Print Scarf", "Capri Pants", "Suede Ankle Booties",
-                    "Chambray Button-Down Dress", "Cargo Jacket", "Polka Dot Blouse", "Pleated Midi Skirt", "Chunky Knit Beanie",
-                    "Velvet Evening Gown", "Striped Sailor Top", "Cropped Flare Jeans", "Faux Fur Coat", "Basketweave Leather Handbag",
-                    "Hiking Boots", "Camouflage Cargo Shorts", "Seersucker Blazer", "Off-the-Shoulder Jumpsuit", "Wide-Leg Palazzo Pants",
-                    "Bowtie", "Fishnet Stockings", "Military-style Jacket", "Chiffon Maxi Skirt", "Retro Aviator Sunglasses",
-                    "Patchwork Denim Jacket", "Baseball Cap", "Velour Tracksuit", "Mock Neck Sweater", "Embroidered Kaftan Dress",
-                    "Plaid Flannel Shirt", "Pleather Leggings", "Bohemian Fringe Vest", "Silk Pajama Set", "Graphic Print Hoodie",
-                    "Maxi Kimono Cardigan", "High-Top Sneakers", "Cable Knit Scarf", "Peplum Blouse", "High-Low Hem Dress",
-                    "Skater Skirt", "Utility Jacket", "Silk Satin Robe", "Cowboy Boots", "Jogger Sweatpants", "Sweater Vest",
-                    "Bell Sleeve Blouse", "Printed Jumpsuit", "Ruffled Mini Skirt", "Classic Turtleneck", "Cargo Jogger Pants",
-                    "Printed Leggings", "Bomber Jacket", "Wide Brim Straw Hat", "Tie-Dye T-Shirt", "Velvet Choker Necklace",
-                    "Denim Overall Dress", "Mock Two-Piece Dress", "Cowl Neck Sweater", "Gingham Checkered Shirt", "Lace-Up Ankle Boots",
-                    "Printed Silk Scarf", "Satin Midi Slip Dress", "Pleather Moto Gloves", "Retro Cat-Eye Sunglasses", "Tweed Blazer",
-                    "Off-the-Shoulder Crop Top", "Jogger Jumpsuit", "Slouchy Beanie", "Colorblock Windbreaker", "Tie-Front Cropped Shirt",
-                    "High-Neck Lace Bodysuit", "Plush Fleece Hoodie", "Mesh Panel Leggings", "Varsity Letterman Jacket", "Cropped Wide-Leg Trousers"
-                    ]
+                    "args": ["hat", "cap", "shirt", "sweater", "sweatshirt", "shorts", "jeans", "sneakers", "boots", "coat", "accessories"]
                 },
                 {
                     "name": "price",

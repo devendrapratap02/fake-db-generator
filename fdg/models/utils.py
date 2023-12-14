@@ -38,4 +38,11 @@ class DbRandomItem(BaseProvider):
         
         return out
 
+class UniqueProvider(BaseProvider):
+    __provider__ = "unique_item"
+    
+    def unique_item(self, *args):
+        return faker.unique.random_from(*args)
+
 faker.add_provider(DbRandomItem)
+faker.add_provider(UniqueProvider)

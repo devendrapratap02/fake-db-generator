@@ -9,6 +9,10 @@ class Person(BaseModel):
     email: str
     gender: str
     address: str
+    
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 class User(Person):
     username: str
@@ -26,7 +30,6 @@ class PersonProvider(BaseProvider):
         return Person(
             first_name=first_name,
             last_name=last_name,
-            full_name=f"{first_name} {last_name}",
             gender=gender,
             email=email_address,
             address=self.generator.address(),
@@ -51,9 +54,9 @@ class RandomProvider(BaseProvider):
 class DateProvider(BaseProvider):
     __provider__ = "random_date"
     
-    def random_date(self, duration:int, format:str = "%Y/%m/%d"):
+    def random_date(self, duration:int):
         date_obj = datetime.datetime.now() + (duration/abs(duration)) * datetime.timedelta(days=self.generator.random.randint(1, abs(duration)))
-        return date_obj.strftime(format)
+        return date_obj.date()
 
 class CustomProvider(BaseProvider):
     __provider__ = "get"
