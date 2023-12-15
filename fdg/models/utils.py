@@ -1,13 +1,22 @@
+from contextlib import contextmanager
+
 from sqlalchemy import Date, ForeignKey, Integer, MetaData, Numeric, String, select
 from sqlalchemy.engine import Engine
 
 from .fake import BaseProvider, faker
-from .schema import DbColumn
+from .schema import TableColumn
 
 
-def get_column_type(column:DbColumn):
-    type_name = column.type.get("name")
-    type_args = column.type.get("args")
+@contextmanager
+def ignore_exception(*exceptions):
+    try:
+        yield
+    except exceptions:
+        pass
+
+def get_column_type(column:TableColumn):
+    type_name = column.type.name
+    type_args = column.type.args
     match type_name:
         case "integer": 
             return Integer
@@ -18,7 +27,12 @@ def get_column_type(column:DbColumn):
         case "date": 
             return Date
         case "foreign": 
-            return ForeignKey(type_args)
+            if isinstance(type_args, dict):
+                name, options = type_args.pop("name"), type_args
+            else:
+                name, options = type_args, {}
+            print(name, options)
+            return ForeignKey(name, **options)
         case _: 
             raise Exception(f"No matched column type found {type_name}")
 

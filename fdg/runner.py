@@ -5,13 +5,14 @@ from argparse import ArgumentParser
 
 from sqlalchemy import (
     Column,
+    Index,
     MetaData,
     Table,
     create_engine,
 )
 from sqlalchemy.engine import URL, Engine
 
-from .models import DbSchema, faker, get_column_type, load_schema
+from .models import DbSchema, faker, get_column_type, ignore_exception, load_schema
 
 sc:DbSchema
 engine:Engine
@@ -26,56 +27,65 @@ def base_setup(filepath):
     full_path = filepath if os.path.isabs(filepath) else os.path.join(os.getcwd(), filepath)
     sc = load_schema(full_path)
     
-    engine = create_engine(URL.create(**sc.database.model_dump()))
+    engine = create_engine(URL.create(**sc.database.model_dump(exclude={"echo"})), echo=sc.database.echo)
     
     metadata = MetaData()
 
 
 def generate_tables():
-    if sc.tables:
-        for table_data in sc.tables:
-            tt = Table(table_data.name, metadata, *[
-                    Column(
-                        column_data.name,
-                        get_column_type(column_data),
-                        **column_data.options,
-                    ) 
-                    for column_data in table_data.columns
-                ])
-            
-            tt.create(engine)
-            print(f"table {tt.name} successfully created")
+    if not sc.tables:
+        return
+
+    for table_data in sc.tables:
+        tt = Table(table_data.name, metadata, *[
+                Column(
+                    column_data.name,
+                    get_column_type(column_data),
+                    **column_data.options,
+                ) 
+                for column_data in table_data.columns
+            ], *[
+                Index(index.name, *index.columns) 
+                for index in table_data.indexes
+            ])
+        
+        with ignore_exception(Exception):
+            tt.drop(engine)
+        tt.create(engine)
+        print(f"table {tt.name} successfully created")
 
 
 def populate_data():
     if sc.populate:
-        extras = {
-            "engine": engine,
-            "metadata": metadata,
-        }
-        with engine.connect() as conn:
-            metadata.reflect(conn)
-            
-        table_length = max([len(t.name) for t in sc.populate])
-        entry_length = max([len(str(t.count)) for t in sc.populate])
+        return
+    
+    extras = {
+        "engine": engine,
+        "metadata": metadata,
+    }
+    with engine.connect() as conn:
+        metadata.reflect(conn)
         
-        for table in sc.populate:
-            faker.unique.clear()
-            tt = metadata.tables.get(table.name)
-            with engine.begin() as conn:
-                for index in range(1, table.count+1):
-                    commons = {}
-                    results = {}
-                    for field in table.fields:
-                        results[field.name], commons = faker.get(
-                            field.generator, 
-                            field.args, 
-                            commons, **extras if field.db_access else {}
-                        )
-                    
-                    conn.execute(tt.insert().values(**results))
-                    print(f"\r{table.name: <{table_length}} | {index: >0{entry_length}} entries | {index*100//table.count}%", end="\r")
-            print()
+    table_length = max([len(t.name) for t in sc.populate])
+    entry_length = max([len(str(t.count)) for t in sc.populate])
+    
+    for table in sc.populate:
+        faker.unique.clear()
+        tt = metadata.tables.get(table.name)
+        with engine.begin() as conn:
+            for index in range(1, table.count+1):
+                commons = {}
+                results = {}
+                for field in table.fields:
+                    results[field.name], commons = faker.get(
+                        field.generator, 
+                        field.args, 
+                        commons, **extras if field.db_access else {}
+                    )
+                
+                conn.execute(tt.insert().values(**results))
+                print(f"\r{table.name: <{table_length}} | {index: >0{entry_length}} entries | {index*100//table.count}%", end="\r")
+        print()
 
 
 def main():
@@ -104,6 +114,14 @@ def main():
         base_setup(args.file)
         
         if args.create:
+            with engine.connect() as conn:
+                metadata.reflect(conn)
+                metadata.drop_all(conn)
+                metadata.clear()
+            
             generate_tables()
         if args.populate:
             populate_data()
+
+if __name__ == "__main__":
+    main()
