@@ -1,0 +1,141 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/product.schema.json",
+    "title": "db-schema",
+    "description": "",
+    "type": "object",
+    "properties": {
+        "database": {
+            "description": "information required to connect to database",
+            "type": "object",
+            "properties": {
+                "dbtype": {
+                    "description": "type of db connect",
+                    "type": "string",
+                    "enum": ["mysql", "psql", "sqlite"]
+                },
+                "drivername": {
+                    "description": "connection driver name",
+                    "type": "string",
+                    "enum": ["mysql+mysqlconnector", "postgresql+psycopg2", "sqlite"]
+                },
+                "username": {
+                    "description": "username",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "password",
+                    "type": "string"
+                },
+                "host": {
+                    "description": "host of database",
+                    "type": "string"
+                },
+                "database": {
+                    "description": "name of the database",
+                    "type": "string"
+                }
+            }
+        },
+        "tables": {
+            "description": "tables information to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "name of the table",
+                        "type": "string"
+                    },
+                    "columns": {
+                        "description": "list of columns in the table",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "description": "name of the column",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "type of the column",
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": ["integer", "date"]
+                                        }, {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "enum": ["integer", "string", "date", "number", "foreign "]
+                                                },
+                                                "args": {
+
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "options": {
+                                    "type": "object",
+                                    "properties": {
+                                        "nullable":{
+                                            "type":"boolean"
+                                        },
+                                        "primary_key": {
+                                            "type":"boolean"
+                                        },
+                                        "unique": {
+                                            "type":"boolean"
+                                        },
+                                        "key": {
+                                            "type":"string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "populate": {
+            "description": "tables information to create",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "name of the table"
+                    },
+                    "count": {
+                        "type": "integer",
+                        "description": "number of records to be populated"
+                    },
+                    "fields": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "name of the column"
+                                },
+                                "generator": {
+                                    "type": "string",
+                                    "description": "name of the faker method"
+                                },
+                                "args": {
+                                    "description": "arguments required for the method",
+                                    "type":["boolean", "number", "string", "array", "object"]   
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
