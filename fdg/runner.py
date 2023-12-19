@@ -12,7 +12,14 @@ from sqlalchemy import (
 )
 from sqlalchemy.engine import URL, Engine
 
-from .models import DbSchema, faker, get_column_type, ignore_exception, load_schema
+from .models import (
+    DbSchema,
+    faker,
+    get_column_type,
+    ignore_exception,
+    load_schema,
+    logger,
+)
 
 sc:DbSchema
 engine:Engine
@@ -27,7 +34,7 @@ def base_setup(filepath):
     full_path = filepath if os.path.isabs(filepath) else os.path.join(os.getcwd(), filepath)
     sc = load_schema(full_path)
     
-    engine = create_engine(URL.create(**sc.database.model_dump(exclude={"echo"})), echo=sc.database.echo)
+    engine = create_engine(URL.create(**sc.database.model_dump()), echo=sc.database.echo)
     
     metadata = MetaData()
 
@@ -56,7 +63,7 @@ def generate_tables():
 
 
 def populate_data():
-    if sc.populate:
+    if not sc.populate:
         return
     
     extras = {
@@ -65,9 +72,11 @@ def populate_data():
     }
     with engine.connect() as conn:
         metadata.reflect(conn)
-        
+    
     table_length = max([len(t.name) for t in sc.populate])
     entry_length = max([len(str(t.count)) for t in sc.populate])
+    
+    log = logger(table_length, entry_length)
     
     for table in sc.populate:
         faker.unique.clear()
@@ -84,8 +93,7 @@ def populate_data():
                     )
                 
                 conn.execute(tt.insert().values(**results))
-                print(f"\r{table.name: <{table_length}} | {index: >0{entry_length}} entries | {index*100//table.count}%", end="\r")
-        print()
+                log(table.name, index + 1, table.count)
 
 
 def main():

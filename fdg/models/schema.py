@@ -17,7 +17,7 @@ class DbOptions(BaseModel):
     password: str
     host: str
     database: str
-    echo: bool = False
+    echo: bool = Field(default=False, exclude=True)
 
 class TableIndex(BaseModel):
     name: str

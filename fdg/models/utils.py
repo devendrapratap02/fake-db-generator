@@ -14,6 +14,14 @@ def ignore_exception(*exceptions):
     except exceptions:
         pass
 
+def logger(table_length, entry_length):
+    def log(table_name, progress, total):
+        print(f"\r{table_name: <{table_length}} | {progress: >0{entry_length}} entries | {progress*100//total}%", end="\r")
+        if progress == total:
+            print()
+    
+    return log
+
 def get_column_type(column:TableColumn):
     type_name = column.type.name
     type_args = column.type.args
@@ -31,7 +39,6 @@ def get_column_type(column:TableColumn):
                 name, options = type_args.pop("name"), type_args
             else:
                 name, options = type_args, {}
-            print(name, options)
             return ForeignKey(name, **options)
         case _: 
             raise Exception(f"No matched column type found {type_name}")
