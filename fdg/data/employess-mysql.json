@@ -4,15 +4,16 @@
     },
     "database": {
         "dbtype": "mysql",
-        "drivername": "postgresql",
+        "drivername": "mysql+mysqlconnector",
         "username": "root",
         "password": "",
         "host": "localhost",
-        "database": "employees"
+        "database": "company",
+        "echo": false
     },
     "tables": [
         {
-            "name": "customers",
+            "name": "employees",
             "columns": [
                 {
                     "name": "customer_id",
@@ -64,7 +65,8 @@
                         }
                     },
                     "options": {
-                        "nullable": false
+                        "nullable": false,
+                        "unique": true
                     }
                 },
                 {
@@ -86,17 +88,24 @@
                     "options": {
                         "nullable": false
                     }
+                }, 
+                {
+                    "name": "hire_date",
+                    "type": {
+                        "name": "date", "args": {}
+                    },
+                    "options": {
+                        "nullable": false
+                    }
                 }
             ]
         },
         {
-            "name": "products", 
+            "name": "departments", 
             "columns": [
                 {
-                    "name": "product_id",
-                    "type": {
-                        "name": "integer"
-                    },
+                    "name": "id",
+                    "type": "integer",
                     "options": {
                         "primary_key": true
                     }
@@ -109,94 +118,70 @@
                         }
                     },
                     "options": {
-                        "nullable": false
-                    }
-                },
-                {
-                    "name": "price",
-                    "type": {
-                        "name": "number",  "args": {
-                            "precision": 10, "scale": 2
-                        }
-                    },
-                    "options": {
-                        "nullable": false
+                        "nullable": false,
+                        "unique": true
                     }
                 }
             ]
         },
         {
-            "name": "stores", 
+            "name": "dept_manager",
             "columns": [
                 {
-                    "name": "store_id",
-                    "type": {
-                        "name": "integer"
-                    },
+                    "name": "id",
+                    "type": "integer",
                     "options": {
                         "primary_key": true
                     }
                 },
                 {
-                    "name": "address",
+                    "name": "employee_id",
                     "type": {
-                        "name": "string",  "args": {
-                            "length": 150
+                        "name": "foreign", 
+                        "args": {
+                            "name": "employees.id", "ondelete": "cascade"
+                        }
+                    },
+                    "options": {
+                        "nullable": false,
+                        "key": "employee_id"
+                    }
+                },
+                {
+                    "name": "department_id",
+                    "type": {
+                        "name": "foreign", 
+                        "args": {
+                            "name": "departments.id", "ondelete": "cascade"
                         }
                     },
                     "options": {
                         "nullable": false
                     }
+                },
+                {
+                    "name": "from_date",
+                    "type": {
+                        "name": "date", "args": {}
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "to_date",
+                    "type": {
+                        "name": "date", "args": {}
+                    },
+                    "options": {
+                        "nullable": false
+                    }
                 }
-            ]
-        },
-        {
-            "name": "transactions", 
-            "columns": [
+            ],
+            "indexes": [
                 {
-                    "name": "transaction_id",
-                    "type": {
-                        "name": "integer"
-                    },
-                    "options": {
-                        "primary_key": true
-                    }
-                },
-                {
-                    "name": "transaction_date",
-                    "type": {
-                        "name": "date",  "args": {}
-                    },
-                    "options": {
-                        "nullable": false
-                    }
-                },
-                {
-                    "name": "customer_id",
-                    "type": {
-                        "name": "foreign",  "args": "customers.customer_id"
-                    },
-                    "options": {
-                        "nullable": false
-                    }
-                },
-                {
-                    "name": "product_id",
-                    "type": {
-                        "name": "foreign",  "args": "products.product_id"
-                    },
-                    "options": {
-                        "nullable": false
-                    }
-                },
-                {
-                    "name": "store_id",
-                    "type": {
-                        "name": "foreign",  "args": "stores.store_id"
-                    },
-                    "options": {
-                        "nullable": false
-                    }
+                    "name": "employee_id__department_id",
+                    "columns": ["employee_id", "department_id"]
                 }
             ]
         }

@@ -1,0 +1,47 @@
+{
+    "$schema": "json-schema.json",
+    "database": {
+       "dbtype": "sqlite",
+       "drivername": "sqlite",
+       "database": "localhost"
+    },
+    "tables": [
+        {
+            "name": "ex-1",
+            "columns": [
+                {
+                    "name": "c1",
+                    "type": {
+                        "name": "string"
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ],
+    "populate": [
+        {
+            "name": "ta",
+            "count": 999,
+            "fields": [
+                {
+                    "name": "maybe",
+                    "generator": "domain_word"
+                }
+            ]
+        },
+        {
+            "name": "",
+            "count": 10,
+            "fields": [
+            
+            {
+                "name": "qawe",
+                "generator": "person.first_name"
+            }
+            ]
+        }
+    ]
+}
