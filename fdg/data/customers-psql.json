@@ -1,4 +1,5 @@
 {
+    "$schema": "https://raw.githubusercontent.com/devendrapratap02/fake-db-generator/master/fdg/data/json-schema.json",
     "$meta": {
         "description": "database schema for customers, products and their orders ie transactions"
     },

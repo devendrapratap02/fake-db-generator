@@ -1,9 +1,9 @@
 {
-    "$schema": "json-schema.json",
+    "$schema": "https://raw.githubusercontent.com/devendrapratap02/fake-db-generator/master/fdg/data/json-schema.json",
     "database": {
        "dbtype": "sqlite",
        "drivername": "sqlite",
-       "database": "localhost"
+       "database": "safd"
     },
     "tables": [
         {
