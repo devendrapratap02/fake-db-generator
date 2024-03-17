@@ -41,7 +41,3 @@ FDG supports connection to any kind of database, allowing flexibility in your da
 ## Example JSON Schemas
 
 You can find example JSON schemas in the fdg/data/ folder:
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
