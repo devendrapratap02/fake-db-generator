@@ -1,0 +1,48 @@
+{
+    "$schema": "https://raw.githubusercontent.com/devendrapratap02/fake-db-generator/master/fdg/data/json-schema.json",
+    "database": {
+        "dbtype": "mysql",
+        "drivername": "mysql+mysqlconnector",
+        "host": "localhost",
+        "username": "root",
+        "password": "password",
+        "database": "short_url"
+    },
+    "tables": [
+        {
+            "name": "urls",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "options": {
+                        "nullable": false,
+                        "primary_key": true
+                    }
+                },
+                {
+                    "name": "short",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 10
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                },
+                {
+                    "name": "long",
+                    "type": {
+                        "name": "string", "args": {
+                            "length": 100
+                        }
+                    },
+                    "options": {
+                        "nullable": false
+                    }
+                }
+            ]
+        }
+    ]
+}
