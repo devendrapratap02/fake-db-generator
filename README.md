@@ -31,6 +31,7 @@ After installing FDG, you can use the fdg command followed by various options:
 ```bash
 fdg -c -f schema.json
 fdg -p -f data.json
+fdg -cpf schema.json
 ```
 
 ### Supported Databases
