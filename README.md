@@ -22,7 +22,7 @@ After installing FDG, you can use the fdg command followed by various options:
 
 - c: Create the database table
 - p: Populate data into the database
-- f <path>: Specify the path to the JSON schema file
+- f `path`: Specify the path to the JSON schema file
 - d: Download example schema
 - h: Display help
 
@@ -40,4 +40,4 @@ FDG supports connection to any kind of database, allowing flexibility in your da
 
 ## Example JSON Schemas
 
-You can find example JSON schemas in the [fdg/data/](fdg/data/) folder:
+You can find example JSON schemas [here](fdg/data/).
