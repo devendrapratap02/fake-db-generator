@@ -13,7 +13,7 @@ FDG (JSON Schema to Database Generator) is a Python tool that allows you to gene
 You can install FDG using pip:
 
 ```bash
-pip install https://github.com/devendrapratap02/fake-db-generator.git
+pip install git+https://github.com/devendrapratap02/fake-db-generator.git
 ```
 
 ## Usage
